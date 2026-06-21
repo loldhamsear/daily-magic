@@ -15,13 +15,11 @@ jobs:
           npm install -g cordova
           cordova create myapp com.dailymagic.tarot "Daily Magic"
           
-          # Move your files into the app folder
           cp index.html myapp/www/
           cp icon.png myapp/www/icon.png
           
           cd myapp
           
-          # Create a proper settings file that tells Cordova exactly where the icon is
           echo '<?xml version="1.0" encoding="utf-8"?>' > config.xml
           echo '<widget id="com.dailymagic.tarot" version="1.0.0" xmlns="http://www.w3.org/ns/widgets">' >> config.xml
           echo '    <name>Daily Magic</name>' >> config.xml
@@ -34,6 +32,10 @@ jobs:
           echo '</widget>' >> config.xml
           
           cordova platform add android
+          
+          # This line downloads the Google AdMob plugin into your project
+          cordova plugin add cordova-plugin-admob-free --save
+          
           cordova build android --debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
