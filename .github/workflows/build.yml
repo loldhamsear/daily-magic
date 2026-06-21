@@ -15,9 +15,21 @@ jobs:
           npm install -g cordova
           cordova create myapp com.dailymagic.tarot "Daily Magic"
           cp index.html myapp/www/
+          
+          # This copies your icon securely into the project folder
           cp icon.png myapp/www/icon.png
-          echo '<widget id="com.dailymagic.tarot" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"><name>Daily Magic</name><content src="index.html" /><icon src="icon.png" /></widget>' > myapp/config.xml
-          cd myapp && cordova platform add android && cordova build android --debug
+          
+          cd myapp
+          cordova platform add android
+          
+          # This tells the Android app folder directly to use your custom icon
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-mdpi/icon.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-hdpi/icon.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xhdpi/icon.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxhdpi/icon.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxxhdpi/icon.png
+          
+          cordova build android --debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
