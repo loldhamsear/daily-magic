@@ -20,12 +20,19 @@ jobs:
           cd myapp
           cordova platform add android
           
-          # This replaces the default Android launcher icons with your custom icon
+          # Replace standard icons
           cp www/icon.png platforms/android/app/src/main/res/mipmap-mdpi/ic_launcher.png
           cp www/icon.png platforms/android/app/src/main/res/mipmap-hdpi/ic_launcher.png
           cp www/icon.png platforms/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
           cp www/icon.png platforms/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
           cp www/icon.png platforms/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+          
+          # Replace modern adaptive foreground icons too
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png
           
           cordova build android --debug
       - name: Upload APK
