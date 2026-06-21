@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Magic</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* Starry night gradient: blends midnight blue into deep purple */
+            background: linear-gradient(180deg, #0f0c20 0%, #2b1055 100%);
+            background-attachment: fixed;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 { 
+            color: #f3a683; 
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
+            font-size: 28px;
+        }
+        .box {
+            background-color: #3d1b75; /* Plum purple for the boxes */
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 15px;
+            max-width: 400px;
+            /* Subtle gold glow around the boxes */
+            box-shadow: 0px 0px 15px rgba(243, 166, 131, 0.2);
+            border: 1px solid rgba(243, 166, 131, 0.1);
+        }
+        button {
+            background-color: #f3a683;
+            color: #2b1055;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.2);
+            transition: background-color 0.2s;
+        }
+        button:hover { background-color: #f7b79e; }
+        .result {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4eed96;
+            min-height: 20px;
+            line-height: 1.5;
+            font-size: 17px;
+        }
+        /* Style for the tarot card graphic */
+        .tarot-card-visual {
+            font-size: 60px;
+            margin: 10px 0;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>✨ My Daily Magic App ✨</h1>
+
+    <!-- Fortune Cookie Section -->
+    <div class="box">
+        <h3>🥠 Fortune Cookie</h3>
+        <p>Crack open your daily fortune message!</p>
+        <button onclick="getFortune()">Crack Cookie</button>
+        <div id="fortune-display" class="result"></div>
+    </div>
+
+    <!-- Lucky Number Section -->
+    <div class="box">
+        <h3>🍀 Lucky Number</h3>
+        <p>Find out your lucky number for today.</p>
+        <button onclick="getLuckyNumber()">Get Number</button>
+        <div id="number-display" class="result"></div>
+    </div>
+
+    <!-- Tarot Section -->
+    <div class="box">
+        <h3>🃏 Mini Tarot Reading</h3>
+        <p>Draw a card for a quick reflection.</p>
+        <!-- The mysterious card graphic -->
+        <div id="card-graphic" class="tarot-card-visual">🔮</div>
+        <br>
+        <button onclick="getTarot()">Draw Card</button>
+        <div id="tarot-display" class="result"></div>
+    </div>
+
+    <script>
+        const fortunes = [
+            "A gentle breeze brings good news your way soon.",
+            "Your kindness is a quiet power that changes the world.",
+            "An unexpected moment of peace will find you today.",
+            "Trust the timing of your life; things are unfolding beautifully.",
+            "A creative idea will spark excitement in you very shortly.",
+            "Take a deep breath. You are doing much better than you think.",
+            "A small comfort will bring a big smile to your face today.",
+            "The hard work you've put in quietly is about to blossom.",
+            "Someone is thinking of you with warm and happy thoughts.",
+            "A mystery that has been bothering you will soon clear up.",
+            "It is a perfect day to be incredibly gentle with yourself.",
+            "A lovely surprise is waiting for you around the next corner.",
+            "Your intuition is incredibly sharp today—trust your gut.",
+            "A peaceful heart conquers all difficult tasks.",
+            "An old friend or a happy memory will warm your day.",
+            "Your patience today will pay off in a wonderful way tomorrow.",
+            "Great things are made of tiny, quiet steps. Keep going.",
+            "A brilliant conversation will give you a fresh perspective.",
+            "Your life is about to get a little bit brighter and easier.",
+            "The universe is sending you a quiet hug today.",
+            "A beautiful rest will bring you fresh energy very soon.",
+            "An old worry is about to fade away into nothing.",
+            "Your quiet strength is noticed and deeply appreciated by others.",
+            "A simple pleasure today will bring you unexpected joy.",
+            "The path ahead of you is clearing up beautifully. Keep trusting.",
+            "You are a safe harbor for the people who know you.",
+            "A wonderful spark of inspiration is headed your way today.",
+            "Good things take time to grow, and you are blooming perfectly.",
+            "A small step forward today is still a magnificent victory.",
+            "The universe is paving a smoother road for you this week.",
+            "Your unique way of looking at things is a beautiful gift.",
+            "A comforting text or message will brighten your afternoon.",
+            "You have survived 100% of your difficult days. You've got this.",
+            "A cozy, peaceful evening is waiting to welcome you home.",
+            "Your heart knows the way; give it time to whisper the answer.",
+            "A pleasant surprise in your finances or luck is on its way.",
+            "You do not have to be perfect to be incredibly worthy.",
+            "A warm cup of comfort and a peaceful thought are coming your way.",
+            "The seeds of happiness you planted in the past are sprouting.",
+            "A gentle wave of clarity will soon settle a busy mind.",
+            "You are exactly where you need to be right now. Take a breath.",
+            "A kind stranger will make your day a little bit softer.",
+            "Your home will feel extra cozy and peaceful very soon.",
+            "A weight you've been carrying is going to feel much lighter.",
+            "Your natural talents are about to shine in a lovely way.",
+            "An opportunity to relax and unwind is heading your way.",
+            "You are deeply allowed to take things one small step at a time.",
+            "A creative hobby will bring you immense comfort this week.",
+            "A quiet victory today will set up a wonderful tomorrow.",
+            "The answers you are searching for will arrive when things quiet down.",
+            "A soft, happy memory will bring a smile to your face out of nowhere.",
+            "Your patience is weaving a very beautiful future for you.",
+            "You are surrounded by more quiet support than you realize.",
+            "A moment of pure laughter is coming to brighten your week.",
+            "The sunset today carries a promise of a peaceful tomorrow.",
+            "Your mind is a beautiful place; be extra kind to it today.",
+            "A gentle answer to a tough question will soon become clear.",
+            "You are doing a wonderful job navigating your journey.",
+            "A stream of positive energy is flowing into your life right now.",
+            "Good news is traveling toward you, eager to arrive.",
+            "Your efforts are building a beautiful foundation for your dreams.",
+            "A small change in your routine will bring a lovely fresh feeling.",
+            "The universe hears your quiet hopes and is working behind the scenes.",
+            "A comforting blanket of calm will wrap around you this evening.",
+            "Your presence brings more comfort to others than you realize.",
+            "An old project or idea will suddenly become easy to finish.",
+            "It is completely okay to press pause and just exist today.",
+            "A bright, cheerful moment is headed your way tomorrow morning.",
+            "The obstacles you worry about are quietly shrinking away.",
+            "You have a beautiful capacity to bring peace into a room.",
+            "A stroke of good luck will arrive exactly when you need it.",
+            "Your inner wisdom has the perfect answer; trust it today.",
+            "A lovely scent, song, or sound will bring you great peace today.",
+            "The universe is gently removing heavy burdens from your path.",
+            "Your heart is resilient, beautiful, and doing a wonderful job.",
+            "A new wave of motivation will make everything feel easier soon.",
+            "A peaceful solution to an annoying problem is on its way.",
+            "You are growing and learning at the absolute perfect pace.",
+            "A small act of self-care today will pay off with great energy.",
+            "The world is a softer place because you are in it.",
+            "A beautifully quiet moment of clarity is coming your way.",
+            "Your quiet determination is your most wonderful asset.",
+            "A gentle, happy reassurance is coming to calm your mind.",
+            "A wonderful coincidence will make you smile today.",
+            "You are fully supported by the universe in your quiet dreams.",
+            "A refreshing change of pace will bring you immense comfort.",
+            "An unexpected compliment will warm your heart this week.",
+            "Your path is protected, and you are entirely safe to grow.",
+            "A lovely sense of accomplishment will crown your day.",
+            "A soft light is shining on all your worries, melting them away.",
+            "You have plenty of time. There is absolutely no need to rush.",
+            "A creative spark will make your evening feel extra magical.",
+            "Your gentle nature is a rare and precious gift to the world.",
+            "A sense of deep gratitude will make your heart feel very light.",
+            "The universe is aligning things to make your life much simpler.",
+            "A soothing and peaceful night of sleep is coming your way.",
+            "Your dreams are valid, and you are capable of reaching them.",
+            "A beautiful milestone is much closer than it appears.",
+            "You are deeply appreciated for exactly who you are.",
+            "A quiet, joyful blessing is heading directly to your doorstep."
+        ];
+
+        const tarotCards = [
+            "0. The Fool (Upright): A fresh start is here. Trust the universe and take a leap of faith!",
+            "0. The Fool (Reversed): Slow down and look before you leap. Take your time to plan.",
+            "I. The Magician (Upright): You have all the skills and tools you need to create something wonderful.",
+            "I. The Magician (Reversed): You have hidden talents that you aren't using yet. Trust yourself!",
+            "II. The High Priestess (Upright): Trust your inner voice today. The answers are already inside you.",
+            "II. The High Priestess (Reversed): Quiet the outside noise. You need some quiet time to hear your intuition.",
+            "III. The Empress (Upright): A beautiful time for comfort, self-care, and creative growth.",
+            "III. The Empress (Reversed): Remember to care for yourself as much as you care for other people.",
+            "IV. The Emperor (Upright): Focus on creating a safe, calm, and organized space for yourself.",
+            "IV. The Emperor (Reversed): Avoid being too hard on yourself. Let go of the need to control everything.",
+            "V. The Hierophant (Upright): A good day to learn something new or seek wisdom from a trusted source.",
+            "V. The Hierophant (Reversed): It is okay to do things your own unique way instead of following the crowd.",
+            "VI. The Lovers (Upright): Focus on harmony, balance, and being kind to yourself and others.",
+            "VI. The Lovers (Reversed): Take a moment to align your choices with what truly makes your heart happy.",
+            "VII. The Chariot (Upright): Keep your determination up! You are moving in the right direction.",
+            "VII. The Chariot (Reversed): If things feel chaotic, pull over and rest. You don't have to rush.",
+            "VIII. Strength (Upright): Quiet patience and inner courage are your superpower today.",
+            "VIII. Strength (Reversed): You are stronger than you think. Take a deep breath and find your inner calm.",
+            "IX. The Hermit (Upright): Take some peaceful alone time to recharge your battery and reflect.",
+            "IX. The Hermit (Reversed): It is time to gently step back into the world after a period of quiet rest.",
+            "X. Wheel of Fortune (Upright): Good luck is shifting your way. Embrace the changing tides.",
+            "X. Wheel of Fortune (Reversed): This tough moment is only temporary. The wheel will turn back to good times soon.",
+            "XI. Justice (Upright): Stay true to your honesty and fairness. Balance will be restored.",
+            "XI. Justice (Reversed): Forgive yourself for past mistakes. Be fair and gentle with your own heart.",
+            "XII. The Hanged Man (Upright): Try looking at a tricky situation from a completely different angle.",
+            "XII. The Hanged Man (Reversed): Don't stall for too long. A simple, small decision will break the freeze.",
+            "XIII. Death (Upright): An old, tiring phase is ending so something better can start.",
+            "XIII. Death (Reversed): Resist the urge to hold onto the past. Let it go to make room for fresh things.",
+            "XIV. Temperance (Upright): Practice patience, calm, and moderation today. Take it easy.",
+            "XIV. Temperance (Reversed): Things might feel a bit unbalanced. Take a quiet moment to center yourself.",
+            "XV. The Devil (Upright): Notice any bad habits that are draining your energy, and let them go.",
+            "XV. The Devil (Reversed): You are quietly breaking free from old chains and negative thoughts. Keep going!",
+            "XVI. The Tower (Upright): A sudden shift might happen, clearing away old things to make room for the new.",
+            "XVI. The Tower (Reversed): You are successfully avoiding a major drama. The dust is beginning to settle.",
+            "XVII. The Star (Upright): Hope, healing, and bright inspiration are shining down on you.",
+            "XVII. Star (Reversed): Don't lose faith. The dark cloud is passing, and your light is returning.",
+            "XVIII. The Moon (Upright): Things might feel a bit hazy. Trust your instincts to guide you through.",
+            "XVIII. The Moon (Reversed): Misunderstandings are clearing up, and the truth is coming to light.",
+            "XIX. The Sun (Upright): Joy, success, and high energy! A wonderful omen for happiness.",
+            "XIX. The Sun (Reversed): The joy is still there, it is just temporarily behind a cloud. Smile anyway!",
+            "XX. Judgement (Upright): A time for a fresh awakening. Leave past regrets behind you.",
+            "XX. Judgement (Reversed): Stop doubting your choices. You have learned from the past; trust your mind.",
+            "XXI. The World (Upright): You have accomplished so much. Celebrate your journey and wholeness.",
+            "XXI. The World (Reversed): A beautiful goal is almost finished. Just a few final, tiny steps to go."
+        ];
+
+        function getFortune() {
+            const randomFortune = fortunes[Math.floor(Math.random() * fortunes.length)];
+            document.getElementById('fortune-display').innerText = randomFortune;
+        }
+
+        function getLuckyNumber() {
+            const randomNumber = Math.floor(Math.random() * 100) + 1;
+            document.getElementById('number-display').innerText = "Your lucky number today is: " + randomNumber;
+        }
+
+        function getTarot() {
+            const randomTarot = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+            document.getElementById('tarot-display').innerText = randomTarot;
+            
+            // Updates the visual icon to look like a real drawn card!
+            document.getElementById('card-graphic').innerText = "🃏";
+        }
+    </script>
+
+</body>
+</html>
