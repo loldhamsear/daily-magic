@@ -15,19 +15,17 @@ jobs:
           npm install -g cordova
           cordova create myapp com.dailymagic.tarot "Daily Magic"
           cp index.html myapp/www/
-          
-          # This copies your icon securely into the project folder
           cp icon.png myapp/www/icon.png
           
           cd myapp
           cordova platform add android
           
-          # This tells the Android app folder directly to use your custom icon
-          cp www/icon.png platforms/android/app/src/main/res/mipmap-mdpi/icon.png
-          cp www/icon.png platforms/android/app/src/main/res/mipmap-hdpi/icon.png
-          cp www/icon.png platforms/android/app/src/main/res/mipmap-xhdpi/icon.png
-          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxhdpi/icon.png
-          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxxhdpi/icon.png
+          # This replaces the default Android launcher icons with your custom icon
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+          cp www/icon.png platforms/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
           
           cordova build android --debug
       - name: Upload APK
