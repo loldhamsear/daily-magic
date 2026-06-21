@@ -32,10 +32,6 @@ jobs:
           echo '</widget>' >> config.xml
           
           cordova platform add android
-          
-          # This line downloads the Google AdMob plugin into your project
-          cordova plugin add cordova-plugin-admob-free --save
-          
           cordova build android --debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
