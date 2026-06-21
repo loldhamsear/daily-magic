@@ -261,4 +261,20 @@
     </script>
 
 </body>
+<script src="cordova.js"></script>
+<script>
+  document.addEventListener('deviceready', () => {
+    // This uses Google's official testing ID so it's safe to load
+    const testAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
+    
+    admob.banner.config({
+      id: testAdUnitId,
+      isTesting: true
+    });
+    
+    admob.banner.prepare().then(() => {
+      admob.banner.show();
+    }).catch(err => console.log(err));
+  }, false);
+</script>
 </html>
