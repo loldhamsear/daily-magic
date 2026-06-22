@@ -32,6 +32,10 @@ jobs:
           echo '</widget>' >> config.xml
           
           cordova platform add android
+          
+          # Installs the plugin and binds it firmly to your real Google App ID
+          cordova plugin add cordova-plugin-admob-plus --variable APP_ID_ANDROID="ca-app-pub-2622102832386466~5658514127" --save
+          
           cordova build android --debug
       - name: Upload APK
         uses: actions/upload-artifact@v4
